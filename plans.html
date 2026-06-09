@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Floor Plans — The 57th Street Collection | RediHome</title>
+<meta name="description" content="Explore every plan in The 57th Street Collection from RediHome — views, specifications, and 3D walkthroughs." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   REDIHOME — FLOOR PLAN VIEWER  (self-hosted, scales with PLANS[] below)
+   To add a plan or a view: edit the PLANS array near the bottom <script>.
+   Drop real images via each view's `img` field; leave "" for placeholder.
+   Set each plan's `walkthrough` to its LiveSite/Neezo 3D URL when available.
+   ========================================================================== */
+:root{
+  --bone:#F4EEE3;--bone-2:#EDE5D6;--ink:#1B1A17;--ink-soft:#3a382f;
+  --brick:#A8432A;--brick-deep:#7E2F1B;--iron:#23302A;--kraft:#D8C5A8;
+  --line:rgba(27,26,23,.16);--maxw:1180px;
+  --serif:"Fraunces",Georgia,serif;--sans:"Archivo",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bone);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+a{color:inherit;text-decoration:none}
+.eyebrow{font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;gap:.55em;font-family:var(--sans);font-weight:600;font-size:.95rem;padding:14px 24px;border-radius:2px;cursor:pointer;border:1.5px solid var(--ink);background:var(--ink);color:var(--bone);transition:transform .18s,box-shadow .18s,background .18s}
+.btn:hover{transform:translateY(-2px);box-shadow:5px 6px 0 var(--brick)}
+.btn--brick{background:var(--brick);border-color:var(--brick)}
+.btn--brick:hover{box-shadow:5px 6px 0 var(--ink)}
+.btn--ghost{background:transparent;color:var(--ink)}
+.btn--ghost:hover{background:var(--ink);color:var(--bone);box-shadow:5px 6px 0 var(--brick)}
+.btn .arr{transition:transform .18s}.btn:hover .arr{transform:translateX(3px)}
+
+/* nav */
+header.nav{position:sticky;top:0;z-index:50;background:rgba(244,238,227,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between}
+.mark{font-family:var(--serif);font-weight:600;font-size:1.5rem;letter-spacing:-.01em}
+.mark .dot{color:var(--brick)}
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{font-size:.84rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.78;transition:.15s}
+.nav-links a:hover{opacity:1;color:var(--brick)}
+.nav-cta{padding:9px 18px;font-size:.8rem}
+@media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+
+/* page head */
+.phead{padding:56px 0 30px;border-bottom:1.5px solid var(--ink)}
+.phead .eyebrow{color:var(--brick)}
+.phead h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,5vw,3.6rem);line-height:1;letter-spacing:-.02em;margin-top:14px}
+.phead p{margin-top:14px;max-width:54ch;color:var(--ink-soft)}
+
+/* plan tabs */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;padding:26px 0 0}
+.tab{font-family:var(--sans);font-weight:600;font-size:.86rem;letter-spacing:.02em;padding:11px 18px;border:1.5px solid var(--ink);border-radius:2px;background:transparent;color:var(--ink);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:9px}
+.tab small{font-size:.66rem;opacity:.55;letter-spacing:.1em;text-transform:uppercase}
+.tab:hover{background:var(--bone-2)}
+.tab.active{background:var(--ink);color:var(--bone)}
+.tab.active small{color:var(--kraft);opacity:.9}
+
+/* viewer */
+.viewer{display:grid;grid-template-columns:1.35fr .9fr;gap:40px;padding:40px 0 90px;align-items:start}
+@media(max-width:900px){.viewer{grid-template-columns:1fr;gap:30px}}
+.stage{border:1.5px solid var(--ink);border-radius:3px;overflow:hidden;background:linear-gradient(135deg,var(--kraft),#e7d9bf);box-shadow:10px 12px 0 rgba(27,26,23,.08)}
+.stage .frame{position:relative;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.stage .frame img{width:100%;height:100%;object-fit:cover;display:block}
+.stage .frame .ph{width:55%;opacity:.5}
+.stage .frame .vlabel{position:absolute;left:14px;bottom:12px;background:var(--ink);color:var(--bone);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px}
+.stage .frame .soon{position:absolute;right:14px;bottom:12px;background:rgba(244,238,227,.75);color:var(--ink-soft);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:2px}
+.thumbs{display:flex;gap:10px;padding:12px;background:var(--bone-2);border-top:1.5px solid var(--ink)}
+.thumb{flex:1;aspect-ratio:4/3;border:1.5px solid var(--line);border-radius:2px;background:linear-gradient(135deg,#e7d9bf,var(--kraft));cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:.15s;position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb .tlab{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7;text-align:center;padding:4px}
+.thumb.active{border-color:var(--brick);box-shadow:0 0 0 1.5px var(--brick)}
+
+/* finish palette bar (configurator) */
+.palbar{padding:13px 12px;background:var(--bone-2);border-top:1.5px solid var(--ink);display:none}
+.palbar.show{display:block}
+.palbar .pl{font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.palbar .pl b{color:var(--brick);opacity:1}
+.pals{display:flex;gap:8px;flex-wrap:wrap}
+.pal{display:flex;align-items:center;gap:8px;background:var(--bone);border:1.5px solid var(--line);border-radius:3px;padding:6px 12px 6px 7px;cursor:pointer;font:inherit;transition:.15s}
+.pal:hover{border-color:var(--ink);transform:translateY(-1px)}
+.pal.active{border-color:var(--brick);box-shadow:0 0 0 1px var(--brick)}
+.pal i{width:24px;height:24px;border-radius:2px;border:1px solid rgba(27,26,23,.22);background:linear-gradient(135deg,var(--a) 0 33%,var(--b) 33% 66%,var(--c) 66% 100%)}
+.pal span{font-size:.78rem;font-weight:600}
+
+/* info panel */
+.panel .badge{display:inline-block;background:var(--brick);color:var(--bone);font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:2px}
+.panel h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4.5vw,3rem);line-height:1;letter-spacing:-.02em;margin:16px 0 6px}
+.panel .named{color:var(--brick);font-size:.82rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.panel .flag{display:none;margin-top:12px;font-size:.74rem;color:var(--brick-deep);background:#f3e0da;border:1px solid var(--brick);padding:7px 10px;border-radius:2px}
+.panel .flag.show{display:block}
+.specbar{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:24px 0;border-radius:3px;overflow:hidden}
+.specbar div{background:var(--bone);padding:16px 14px;text-align:center}
+.specbar b{font-family:var(--serif);font-size:1.5rem;line-height:1;display:block}
+.specbar span{font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:6px;display:block}
+.price-line{font-size:1.05rem;margin-bottom:8px}
+.price-line b{font-family:var(--serif);color:var(--brick);font-size:1.35rem}
+.feat h4{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin:22px 0 12px;border-top:1px solid var(--line);padding-top:18px}
+.feat ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:9px 18px}
+@media(max-width:520px){.feat ul{grid-template-columns:1fr}}
+.feat li{font-size:.9rem;display:flex;gap:9px;align-items:flex-start}
+.feat li::before{content:"◆";color:var(--brick);font-size:.6em;margin-top:.5em}
+.panel .cta{display:flex;flex-direction:column;gap:11px;margin-top:26px}
+.panel .cta .btn{width:100%;justify-content:center}
+
+footer{background:var(--ink);color:var(--bone);padding:40px 0;font-size:.82rem}
+.foot-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;opacity:.7}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="mark">RediHome<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="index.html#collection">The Collection</a>
+      <a href="index.html#why">Why RediHome</a>
+      <a href="plans.html">Floor Plans</a>
+      <a href="index.html#reserve" class="btn btn--brick nav-cta">Reserve a Home</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="phead">
+    <span class="eyebrow">The 57th Street Collection</span>
+    <h1>Floor Plans</h1>
+    <p>Every home in the collection — views, specifications and 3D walkthroughs. Built all-electric and American-made, priced for the people who keep Birmingham running.</p>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="viewer">
+    <!-- IMAGE STAGE -->
+    <div>
+      <div class="stage">
+        <div class="frame" id="stageFrame"></div>
+        <div class="thumbs" id="thumbs"></div>
+        <div class="palbar" id="palbar"></div>
+      </div>
+    </div>
+
+    <!-- INFO PANEL -->
+    <div class="panel" id="panel"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-in">
+    <span>© <span id="yr"></span> Pathway Invest, LLC (dba RediHome).</span>
+    <span><a href="mailto:sales@redihome.io">sales@redihome.io</a> · Birmingham, Alabama</span>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+   PLAN DATA — single source of truth for this viewer.
+   • Add a view:  push {label:"...", img:"assets/...jpg"} into a plan's views[]
+   • Add a plan:  copy a whole {…} block
+   • 3D walkthrough: set `walkthrough` to the plan's LiveSite/Neezo URL
+   ⚠ Specs / prices / feature lists for Plans 02–05 are ESTIMATES — confirm.
+   ════════════════════════════════════════════════════════════════════════ */
+const PLANS = [
+  {
+    id:"tuggle", badge:"Plan 01", name:"The Tuggle", named:"named for Carrie A. Tuggle",
+    confirmed:true, sf:"1,541", br:"3", ba:"2", price:"From $324,999",
+    walkthrough:"https://plans.livesiteapp.com/?planId=1a1d986a-36d1-4f9c-bf08-150b03cbdc45",
+    config:{
+      base:"assets/tuggle/",
+      palettes:[
+        {id:"oak",   name:"Warm Oak",      sw:["#caa97e","#ffffff","#8f9b82"]},
+        {id:"green", name:"Forest Green",  sw:["#3d4a39","#6f5a3f","#e7e2d8"]},
+        {id:"linen", name:"Soft Linen",    sw:["#e4d8c5","#ffffff","#cbb89a"]},
+        {id:"bold",  name:"Bold Contrast", sw:["#e4d8c5","#161616","#ffffff"]}
+      ],
+      rooms:[
+        {label:"Living Room", pal:true,  src:"living"},
+        {label:"Kitchen",     pal:true,  src:"kitchen"},
+        {label:"Bathroom",    pal:true,  src:"bath"},
+        {label:"Exterior",    pal:false, src:"assets/tuggle/exterior.jpg"},
+        {label:"Floor Plan",  pal:false, src:"assets/tuggle/floorplan.jpg", fit:"contain"}
+      ]
+    },
+    features:["Choose from 4 finish palettes","4 exterior color packs","Slab-on-grade · all-electric","Vaulted open great room","Dual-vanity primary bath","Energy-efficient envelope"]
+  },
+  {
+    id:"powell", badge:"Plan 02", name:"The Powell", named:"named for Col. James R. Powell",
+    confirmed:false, sf:"~1,600", br:"3", ba:"2", price:"From $324,999",
+    walkthrough:"", views:[ {label:"Front Elevation",img:""}, {label:"Rear",img:""}, {label:"Floor Plan",img:""} ],
+    features:["Slab-on-grade foundation","100% all-electric","Open-concept main level","Flex / office nook","Covered porch","Efficient HVAC"]
+  },
+  {
+    id:"pettiford", badge:"Plan 03", name:"The Pettiford", named:"named for Rev. W. R. Pettiford",
+    confirmed:false, sf:"~1,450", br:"2", ba:"2", price:"From $299,999",
+    walkthrough:"", views:[ {label:"Front Elevation",img:""}, {label:"Rear",img:""}, {label:"Floor Plan",img:""} ],
+    features:["Slab-on-grade foundation","100% all-electric","Compact, efficient layout","Primary suite","Front porch","Low-maintenance exterior"]
+  },
+  {
+    id:"rickwood", badge:"Plan 04", name:"The Rickwood", named:"named for Rickwood Field",
+    confirmed:false, sf:"~1,750", br:"4", ba:"2.5", price:"From $349,999",
+    walkthrough:"", views:[ {label:"Front Elevation",img:""}, {label:"Rear",img:""}, {label:"Floor Plan",img:""} ],
+    features:["Two-story plan","100% all-electric","4 bedrooms","1.5–2.5 baths","Family + dining","Largest standard plan"]
+  }
+];
+
+const HOUSE_PH = `<svg class="ph" viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg"><g stroke="#1B1A17" stroke-width="2" stroke-linejoin="round" fill="none" opacity="0.5"><path d="M40 86 L120 36 L200 86" fill="#A8432A" fill-opacity="0.12"/><path d="M40 86 L120 36 L200 86"/><rect x="58" y="86" width="124" height="50"/><rect x="74" y="98" width="24" height="24"/><rect x="142" y="98" width="24" height="24"/><rect x="110" y="106" width="22" height="30" fill="#23302A" fill-opacity="0.6"/></g></svg>`;
+const TH_PH = `<span class="tlab">view</span>`;
+
+let current = 0, currentView = 0, currentPal = "oak";
+
+function renderTabs(){
+  document.getElementById("tabs").innerHTML = PLANS.map((p,i)=>
+    `<button class="tab ${i===current?'active':''}" data-i="${i}">${p.name}<small>${p.badge}</small></button>`).join("");
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{ current=+t.dataset.i; currentView=0; renderAll(); history.replaceState(null,"","#"+PLANS[current].id); }));
+}
+
+function renderStage(){
+  const p = PLANS[current];
+  const frame = document.getElementById("stageFrame");
+  const thumbs = document.getElementById("thumbs");
+  const pb = document.getElementById("palbar");
+
+  if(p.config){
+    const cfg = p.config;
+    if(currentView >= cfg.rooms.length) currentView = 0;
+    const room = cfg.rooms[currentView];
+    const imgSrc = room.pal ? `${cfg.base}${room.src}-${currentPal}.jpg` : room.src;
+    const palName = (cfg.palettes.find(x=>x.id===currentPal)||{}).name || "";
+    const fit = room.fit || "cover";
+    frame.innerHTML =
+      `<img src="${imgSrc}" alt="${p.name} — ${room.label}" style="object-fit:${fit}">`
+      + `<span class="vlabel">${room.label}${room.pal?` · ${palName}`:""}</span>`;
+    thumbs.innerHTML = cfg.rooms.map((rm,i)=>{
+      const t = rm.pal ? `${cfg.base}${rm.src}-${currentPal}.jpg` : rm.src;
+      return `<button class="thumb ${i===currentView?'active':''}" data-v="${i}"><img src="${t}" alt="${rm.label}" style="object-fit:${rm.fit||'cover'}"></button>`;
+    }).join("");
+    pb.className = "palbar show";
+    pb.innerHTML = `<div class="pl">Choose your finish — <b>${palName}</b></div>
+      <div class="pals">${cfg.palettes.map(pl=>
+        `<button class="pal ${pl.id===currentPal?'active':''}" data-p="${pl.id}" style="--a:${pl.sw[0]};--b:${pl.sw[1]};--c:${pl.sw[2]}"><i></i><span>${pl.name}</span></button>`).join("")}</div>`;
+    pb.querySelectorAll(".pal").forEach(b=>b.addEventListener("click",()=>{ currentPal=b.dataset.p; renderStage(); }));
+  } else {
+    const v = p.views[currentView];
+    pb.className = "palbar";
+    frame.innerHTML =
+      (v.img ? `<img src="${v.img}" alt="${p.name} — ${v.label}">` : HOUSE_PH)
+      + `<span class="vlabel">${v.label}</span>`
+      + (v.img ? "" : `<span class="soon">Rendering soon</span>`);
+    thumbs.innerHTML = p.views.map((vw,i)=>
+      `<button class="thumb ${i===currentView?'active':''}" data-v="${i}">${vw.img?`<img src="${vw.img}" alt="">`:`<span class="tlab">${vw.label}</span>`}</button>`).join("");
+  }
+  thumbs.querySelectorAll(".thumb").forEach(t=>t.addEventListener("click",()=>{ currentView=+t.dataset.v; renderStage(); }));
+}
+
+function renderPanel(){
+  const p = PLANS[current];
+  const wt = p.walkthrough
+    ? `<a class="btn btn--ghost" href="${p.walkthrough}" target="_blank" rel="noopener">Open 3D walkthrough <span class="arr">↗</span></a>`
+    : `<a class="btn btn--ghost" href="mailto:sales@redihome.io?subject=3D walkthrough — ${encodeURIComponent(p.name)}" >Request 3D walkthrough <span class="arr">→</span></a>`;
+  document.getElementById("panel").innerHTML = `
+    <span class="badge">${p.badge}</span>
+    <h2>${p.name}</h2>
+    <div class="named">${p.named}</div>
+    <div class="flag ${p.confirmed?'':'show'}">Estimated specs — confirm before publishing.</div>
+    <div class="specbar">
+      <div><b>${p.sf}</b><span>Sq Ft</span></div>
+      <div><b>${p.br}</b><span>Beds</span></div>
+      <div><b>${p.ba}</b><span>Baths</span></div>
+    </div>
+    <div class="price-line"><b>${p.price}</b></div>
+    <div class="feat"><h4>Features</h4><ul>${p.features.map(f=>`<li>${f}</li>`).join("")}</ul></div>
+    <div class="cta">
+      <a class="btn btn--brick" href="index.html#reserve">Reserve this plan <span class="arr">→</span></a>
+      ${wt}
+    </div>`;
+}
+
+function renderAll(){ renderTabs(); renderStage(); renderPanel(); }
+
+/* deep-link by hash (e.g. plans.html#rickwood) */
+function applyHash(){
+  const h = location.hash.replace("#","");
+  const idx = PLANS.findIndex(p=>p.id===h);
+  if(idx>=0){ current=idx; currentView=0; renderAll(); }
+}
+const h = location.hash.replace("#","");
+const idx = PLANS.findIndex(p=>p.id===h);
+if(idx>=0) current=idx;
+window.addEventListener("hashchange", applyHash);
+
+renderAll();
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

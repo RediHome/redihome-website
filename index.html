@@ -1,171 +1,553 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RediHome — New homes in Birmingham's historic neighborhoods</title>
-  <meta name="description" content="The 57th Street Collection. Four homes. Four Birmingham legends. Brand-new construction in Birmingham's historic neighborhoods." />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RediHome — The 57th Street Collection | Attainable, all-electric homes in Birmingham</title>
+<meta name="description" content="RediHome builds attainable, all-electric, American-made homes for working Birmingham. Reserve a home from The 57th Street Collection — priced from $300,000 in Woodlawn, Avondale & Norwood." />
+<meta property="og:title" content="RediHome — The 57th Street Collection" />
+<meta property="og:description" content="Attainable, all-electric homes built for Birmingham. Now reserving." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   REDIHOME — THE 57TH STREET COLLECTION  ·  launch landing page
+   ----------------------------------------------------------------------------
+   >>> EDIT BEFORE GOING LIVE: search this file for the word  EDIT
+   Two values you must set (in the CONFIG block near the bottom <script>):
+       1. STRIPE_LINK     — your Stripe Payment Link for the reservation deposit
+       2. FORMSPREE_URL   — your Formspree endpoint for the lead form
+   Plan specs / prices for Plans 02–05 are best estimates — confirm them.
+   Drop real renderings where you see  <!-- IMG: ... -->  comments.
+   ========================================================================== */
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="RediHome — The 57th Street Collection" />
-  <meta property="og:description" content="New homes in Birmingham's historic neighborhoods." />
-  <meta property="og:image" content="/images/lineup.jpg" />
-  <meta property="og:type" content="website" />
+:root{
+  --bone:#F4EEE3;          /* warm paper background */
+  --bone-2:#EDE5D6;
+  --ink:#1B1A17;           /* near-black warm charcoal */
+  --ink-soft:#3a382f;
+  --brick:#A8432A;         /* Birmingham brick — the hero accent */
+  --brick-deep:#7E2F1B;
+  --iron:#23302A;          /* deep ironwork green for dark sections */
+  --kraft:#D8C5A8;         /* tan fills */
+  --kraft-line:#cdb893;
+  --line:rgba(27,26,23,.16);
+  --maxw:1180px;
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Archivo","Helvetica Neue",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bone);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* subtle paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+a{color:inherit;text-decoration:none}
+.eyebrow{font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase}
+.serif{font-family:var(--serif)}
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.55em;
+  font-family:var(--sans);font-weight:600;font-size:.95rem;letter-spacing:.01em;
+  padding:15px 26px;border-radius:2px;cursor:pointer;border:1.5px solid var(--ink);
+  background:var(--ink);color:var(--bone);transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:5px 6px 0 var(--brick)}
+.btn--brick{background:var(--brick);border-color:var(--brick)}
+.btn--brick:hover{box-shadow:5px 6px 0 var(--ink)}
+.btn--ghost{background:transparent;color:var(--ink)}
+.btn--ghost:hover{background:var(--ink);color:var(--bone);box-shadow:5px 6px 0 var(--brick)}
+.btn .arr{font-size:1.05em;transition:transform .18s ease}
+.btn:hover .arr{transform:translateX(3px)}
 
-  <link rel="stylesheet" href="/styles.css" />
+/* ---------- nav ---------- */
+header.nav{position:sticky;top:0;z-index:50;background:rgba(244,238,227,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between}
+.mark{display:flex;align-items:baseline;gap:.5ch;font-family:var(--serif);font-weight:600;font-size:1.5rem;letter-spacing:-.01em}
+.mark b{color:var(--brick);font-weight:600}
+.mark .dot{color:var(--brick)}
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{font-size:.84rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;opacity:.78;transition:opacity .15s,color .15s}
+.nav-links a:hover{opacity:1;color:var(--brick)}
+.nav-cta{padding:9px 18px;font-size:.8rem}
+@media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:78px 0 70px;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;color:var(--brick);margin-bottom:26px}
+.hero-tag .rule{width:46px;height:1.5px;background:var(--brick)}
+h1.hero-h{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(2.7rem,6.2vw,5rem);line-height:.98;letter-spacing:-.02em;
+  font-optical-sizing:auto;
+}
+h1.hero-h em{font-style:italic;color:var(--brick)}
+.hero-sub{margin:26px 0 8px;font-size:1.12rem;max-width:30ch;color:var(--ink-soft)}
+.hero-specs{display:flex;gap:26px;flex-wrap:wrap;margin:30px 0 34px}
+.hero-specs .s{display:flex;flex-direction:column}
+.hero-specs .s b{font-family:var(--serif);font-size:1.5rem;line-height:1}
+.hero-specs .s span{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-top:6px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+/* hero visual: stamped "now building" card + house line art */
+.hero-card{position:relative;border:1.5px solid var(--ink);background:var(--bone-2);padding:30px;border-radius:3px;box-shadow:10px 12px 0 rgba(27,26,23,.08)}
+.hero-card .stamp{position:absolute;top:-16px;right:18px;background:var(--brick);color:var(--bone);font-weight:700;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;padding:7px 12px;transform:rotate(-2.5deg)}
+.house-svg{width:100%;height:auto;display:block}
+.hero-card .addr{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline;font-size:.82rem}
+.hero-card .addr b{font-family:var(--serif);font-size:1.05rem}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:38px}.hero{padding:52px 0 50px}}
+
+/* ---------- marquee strip ---------- */
+.strip{background:var(--ink);color:var(--bone);overflow:hidden;border-bottom:1px solid var(--ink)}
+.strip-track{display:flex;gap:44px;padding:14px 0;white-space:nowrap;animation:slide 30s linear infinite;font-family:var(--serif);font-style:italic;font-size:1.15rem}
+.strip-track span{display:inline-flex;align-items:center;gap:44px}
+.strip-track i{font-style:normal;color:var(--brick);font-size:.7em}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- section scaffold ---------- */
+section{padding:84px 0;position:relative}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:46px;border-bottom:1.5px solid var(--ink);padding-bottom:18px}
+.sec-num{font-family:var(--serif);font-size:.95rem;color:var(--brick);font-weight:600}
+.sec-title{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,4vw,3rem);line-height:1;letter-spacing:-.015em}
+.sec-kicker{max-width:34ch;font-size:.98rem;color:var(--ink-soft);text-align:right}
+@media(max-width:680px){.sec-head{flex-direction:column;align-items:flex-start}.sec-kicker{text-align:left}}
+
+/* ---------- collection cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+@media(max-width:920px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.card{border:1.5px solid var(--ink);background:var(--bone-2);border-radius:3px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-4px);box-shadow:8px 10px 0 rgba(27,26,23,.1)}
+.card .img{position:relative;aspect-ratio:4/3;background:
+  linear-gradient(135deg,var(--kraft),#e7d9bf);border-bottom:1.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card .img img{width:100%;height:100%;object-fit:cover;display:block}   /* real rendering goes here */
+.card .img .ph{opacity:.5;width:62%}
+.card .img .badge{position:absolute;top:12px;left:12px;background:var(--ink);color:var(--bone);font-size:.66rem;font-weight:700;letter-spacing:.14em;padding:5px 9px;text-transform:uppercase}
+.card .img .soon{position:absolute;bottom:10px;right:12px;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);background:rgba(244,238,227,.7);padding:3px 7px;border-radius:2px}
+.card .body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.card .body h3{font-family:var(--serif);font-size:1.65rem;font-weight:500;line-height:1;letter-spacing:-.01em}
+.card .named{font-size:.74rem;letter-spacing:.06em;color:var(--brick);text-transform:uppercase;margin-top:7px;font-weight:600}
+.card .specs{display:flex;gap:16px;margin:16px 0 4px;font-size:.86rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0}
+.card .specs div{display:flex;flex-direction:column}
+.card .specs b{font-family:var(--serif);font-size:1.12rem;line-height:1}
+.card .specs span{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:4px}
+.card .price{margin-top:14px;font-size:.95rem}
+.card .price b{font-family:var(--serif);font-size:1.2rem;color:var(--brick)}
+.card .links{margin-top:auto;padding-top:18px;display:flex;gap:10px}
+.card .links a{flex:1;text-align:center;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:11px 8px;border:1.5px solid var(--ink);border-radius:2px;transition:.15s}
+.card .links a.solid{background:var(--ink);color:var(--bone)}
+.card .links a.solid:hover{background:var(--brick);border-color:var(--brick)}
+.card .links a.line:hover{background:var(--ink);color:var(--bone)}
+.card.teaser{background:var(--iron);color:var(--bone);justify-content:center;align-items:flex-start;padding:34px}
+.card.teaser h3{color:var(--bone)}
+.card.teaser .named{color:var(--kraft)}
+.card.teaser p{font-size:.92rem;opacity:.85;margin-top:14px}
+.card.teaser .flag{margin-top:18px;font-family:var(--serif);font-style:italic;color:var(--kraft);font-size:1.05rem}
+
+/* ---------- why band (dark) ---------- */
+.band{background:var(--iron);color:var(--bone)}
+.band .sec-head{border-color:rgba(244,238,227,.3)}
+.band .sec-title{color:var(--bone)}
+.band .sec-num{color:var(--kraft)}
+.band .sec-kicker{color:rgba(244,238,227,.7)}
+.vals{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(244,238,227,.18);border:1px solid rgba(244,238,227,.18)}
+@media(max-width:820px){.vals{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:460px){.vals{grid-template-columns:1fr}}
+.val{background:var(--iron);padding:30px 26px}
+.val .n{font-family:var(--serif);color:var(--kraft);font-size:.9rem;font-weight:600}
+.val h4{font-family:var(--serif);font-weight:500;font-size:1.4rem;margin:14px 0 10px;line-height:1.05}
+.val p{font-size:.9rem;opacity:.82;line-height:1.55}
+
+/* ---------- reserve ---------- */
+#reserve{background:var(--bone)}
+.reserve-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:54px;align-items:start}
+@media(max-width:880px){.reserve-grid{grid-template-columns:1fr;gap:38px}}
+.reserve-copy h2{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,4.2vw,3.1rem);line-height:1;letter-spacing:-.02em}
+.reserve-copy h2 em{font-style:italic;color:var(--brick)}
+.reserve-copy p{margin-top:20px;font-size:1.05rem;color:var(--ink-soft);max-width:42ch}
+.steps{margin-top:30px;display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:18px;padding:18px 0;border-top:1px solid var(--line)}
+.step:last-child{border-bottom:1px solid var(--line)}
+.step .k{font-family:var(--serif);font-size:1.5rem;color:var(--brick);line-height:1;min-width:38px}
+.step b{font-weight:600}
+.step p{margin-top:4px;font-size:.92rem;color:var(--ink-soft);max-width:none}
+.deposit-card{border:1.5px solid var(--ink);background:var(--bone-2);border-radius:3px;padding:30px;box-shadow:10px 12px 0 rgba(27,26,23,.08)}
+.deposit-card .row1{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1.5px solid var(--ink);padding-bottom:16px;margin-bottom:18px}
+.deposit-card .amt{font-family:var(--serif);font-size:2.4rem;line-height:1}
+.deposit-card .amt small{font-size:.9rem;color:var(--ink-soft);font-family:var(--sans)}
+.deposit-card .tag{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--brick);font-weight:700}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:6px;opacity:.7}
+.field input,.field select,.field textarea{
+  width:100%;font-family:var(--sans);font-size:.98rem;padding:12px 14px;
+  border:1.5px solid var(--line);background:var(--bone);border-radius:2px;color:var(--ink);transition:border .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--brick)}
+.field.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.deposit-card .actions{margin-top:8px;display:flex;flex-direction:column;gap:12px}
+.deposit-card .actions .btn{width:100%;justify-content:center}
+.note{font-size:.76rem;color:var(--ink-soft);margin-top:6px;line-height:1.5}
+.formmsg{display:none;padding:14px 16px;border-radius:2px;font-size:.9rem;margin-top:6px}
+.formmsg.ok{display:block;background:#e7efe4;border:1px solid #6f8f63;color:#2f4a26}
+.formmsg.err{display:block;background:#f3e0da;border:1px solid var(--brick);color:var(--brick-deep)}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:var(--bone);padding:64px 0 34px}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:34px;padding-bottom:38px;border-bottom:1px solid rgba(244,238,227,.18)}
+@media(max-width:720px){.foot-top{grid-template-columns:1fr;gap:26px}}
+.foot-top .mark{color:var(--bone);font-size:1.7rem}
+.foot-top p{opacity:.7;font-size:.92rem;margin-top:14px;max-width:34ch}
+.foot-col h5{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--kraft);margin-bottom:14px}
+.foot-col a,.foot-col span{display:block;font-size:.92rem;opacity:.82;margin-bottom:9px}
+.foot-col a:hover{opacity:1;color:var(--brick)}
+.foot-bot{padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.78rem;opacity:.6}
+
+/* ---------- load reveal ---------- */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav class="nav">
-    <a href="/" class="nav-logo">RediHome</a>
-    <a href="#contact" class="nav-link">Contact</a>
-  </nav>
+<!-- ============================ NAV ============================ -->
+<header class="nav">
+  <div class="nav-in">
+    <a href="#top" class="mark">RediHome<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="#collection">The Collection</a>
+      <a href="#why">Why RediHome</a>
+      <a href="plans.html">Floor Plans</a>
+      <a href="#reserve" class="btn btn--brick nav-cta">Reserve a Home</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-image-wrap">
-      <img src="/images/lineup.jpg" alt="The 57th Street Collection — The Tuggle, The Powell, The Pettiford, The Rickwood" class="hero-image" />
+<!-- ============================ HERO ============================ -->
+<a id="top"></a>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <span class="hero-tag eyebrow"><span class="rule"></span>The 57th Street Collection</span>
+      <h1 class="hero-h">Homeownership,<br>built for <em>Birmingham.</em></h1>
+      <p class="hero-sub">Attainable, all-electric homes — American-made, built to last, and priced for the people who keep this city running.</p>
+      <div class="hero-specs">
+        <div class="s"><b>From $300k</b><span>Priced to own</span></div>
+        <div class="s"><b>100%</b><span>All-electric</span></div>
+        <div class="s"><b>4</b><span>Plans, one block</span></div>
+      </div>
+      <div class="hero-cta">
+        <a href="#reserve" class="btn btn--brick">Reserve your home <span class="arr">→</span></a>
+        <a href="#collection" class="btn btn--ghost">See the collection</a>
+      </div>
     </div>
-    <div class="hero-caption">
-      <span class="hero-eyebrow">The 57th Street Collection</span>
-      <h1 class="hero-title">Four homes.<br/>Four Birmingham legends.</h1>
-      <a href="#tuggle" class="btn-primary">Reserve The Tuggle &rarr;</a>
+
+    <div class="hero-card reveal">
+      <span class="stamp">Now Building</span>
+      <img src="assets/tuggle/exterior.jpg" alt="The Tuggle — new construction at 141 57th St S, Woodlawn" style="width:100%;height:auto;display:block;border-radius:3px">
+      <div class="addr">
+        <div><span class="eyebrow" style="opacity:.6;font-size:.62rem">First home</span><br><b>The Tuggle · Plan 01</b></div>
+        <div style="text-align:right">141 57th St S<br><span style="opacity:.65">Woodlawn, Birmingham</span></div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- THE COLLECTION -->
-  <section class="collection" id="collection">
+<!-- ============================ MARQUEE ============================ -->
+<div class="strip" aria-hidden="true">
+  <div class="strip-track">
+    <span>All-electric <i>◆</i> American-made supply chain <i>◆</i> Built for nurses, teachers & tradespeople <i>◆</i> Woodlawn · Avondale · Norwood <i>◆</i> Attainable by design <i>◆</i></span>
+    <span>All-electric <i>◆</i> American-made supply chain <i>◆</i> Built for nurses, teachers & tradespeople <i>◆</i> Woodlawn · Avondale · Norwood <i>◆</i> Attainable by design <i>◆</i></span>
+  </div>
+</div>
 
-    <!-- THE TUGGLE -->
-    <article class="plan" id="tuggle">
-      <div class="plan-image">
-        <img src="/images/tuggle-kitchen.jpg" alt="The Tuggle kitchen with vaulted ceiling" loading="lazy" />
-        <span class="status status-available">Now Building · Pre-Sale Available</span>
+<!-- ============================ COLLECTION ============================ -->
+<section id="collection">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="sec-num">01 — The Collection</div>
+        <h2 class="sec-title">The 57th Street Collection</h2>
       </div>
-      <div class="plan-content">
-        <span class="plan-number">Plan 01</span>
-        <h2 class="plan-name">The Tuggle</h2>
-        <p class="plan-specs">±1,541 sq ft · 3 Bed · 2 Bath · Single-Story</p>
-        <p class="plan-description">
-          The cornerstone of the 57th Street Collection — and the first RediHome under construction. A vaulted great room, a true split-bedroom layout, and a covered porch on both ends. Designed for the way real families live.
-        </p>
-        <a href="#contact" class="btn-secondary">Reserve for $1,000 &rarr;</a>
-      </div>
-    </article>
+      <p class="sec-kicker">Four plans named for the Birmingham figures who built this city. One block. Built to be owned, not rented.</p>
+    </div>
 
-    <!-- THE POWELL -->
-    <article class="plan plan-reverse" id="powell">
-      <div class="plan-image">
-        <img src="/images/powell-entry.jpg" alt="The Powell open-concept living space" loading="lazy" />
-        <span class="status">Coming Soon</span>
-      </div>
-      <div class="plan-content">
-        <span class="plan-number">Plan 02</span>
-        <h2 class="plan-name">The Powell</h2>
-        <p class="plan-specs">Coming 2026 · Single-Story</p>
-        <p class="plan-description">
-          Named for Colonel James R. Powell — Birmingham's first elected mayor and the man who coined "The Magic City." A confident, open layout built around the heart of the home.
-        </p>
-        <a href="#contact" class="btn-secondary">Join the Waitlist &rarr;</a>
-      </div>
-    </article>
+    <div class="grid" id="planGrid"><!-- cards injected by JS from PLANS[] --></div>
+  </div>
+</section>
 
-    <!-- THE PETTIFORD -->
-    <article class="plan" id="pettiford">
-      <div class="plan-image">
-        <img src="/images/pettiford-vaulted.jpg" alt="The Pettiford vaulted great room" loading="lazy" />
-        <span class="status">Coming Soon</span>
+<!-- ===================== MAKE IT YOURS ===================== -->
+<section id="finishes" class="mk">
+  <style>
+    .mk{padding:clamp(3.5rem,8vw,6rem) 0;background:linear-gradient(180deg,#efe7d8 0%,var(--bone) 100%);border-top:1px solid rgba(27,26,23,.08)}
+    .mk-stage{display:grid;grid-template-columns:1.55fr .85fr;gap:clamp(1.4rem,3vw,2.6rem);align-items:center;margin-top:2.2rem}
+    .mk-figure{margin:0;position:relative;border:1px solid rgba(27,26,23,.14);border-radius:4px;overflow:hidden;box-shadow:0 24px 60px -28px rgba(27,26,23,.45)}
+    .mk-figure img{display:block;width:100%;height:auto;aspect-ratio:1400/690;object-fit:cover;transition:opacity .25s ease}
+    .mk-figure figcaption{position:absolute;left:0;bottom:0;background:rgba(27,26,23,.82);color:var(--bone);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;padding:.5rem .9rem}
+    .mk-figure figcaption span{color:var(--kraft,#d8c5a8);font-weight:700}
+    .mk-pals{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1.5rem}
+    .mk-pal{display:flex;align-items:center;gap:.6rem;text-align:left;background:#fff;border:1.5px solid rgba(27,26,23,.16);border-radius:4px;padding:.6rem .7rem;cursor:pointer;font:inherit;transition:border-color .15s,transform .15s}
+    .mk-pal:hover{transform:translateY(-1px)}
+    .mk-pal.active{border-color:var(--brick)}
+    .mk-pal span{flex:0 0 auto;width:30px;height:30px;border-radius:3px;border:1px solid rgba(27,26,23,.2);background:linear-gradient(135deg,var(--a) 0 33%,var(--b) 33% 66%,var(--c) 66% 100%)}
+    .mk-pal b{font-size:.84rem;font-weight:600}
+    .mk-note{font-size:.78rem;opacity:.6;margin-top:1rem;line-height:1.5}
+    @media(max-width:780px){.mk-stage{grid-template-columns:1fr}}
+  </style>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="sec-num">02 — Make it yours</div>
+        <h2 class="sec-title">You choose how<br>your home looks.</h2>
       </div>
-      <div class="plan-content">
-        <span class="plan-number">Plan 03</span>
-        <h2 class="plan-name">The Pettiford</h2>
-        <p class="plan-specs">±1,500 sq ft · Duplex-Style Living</p>
-        <p class="plan-description">
-          Named for Rev. William Reuben Pettiford — founder of Alabama's first Black-owned bank in 1890. A split layout ideal for multi-generational families, roommates, or anyone who values privacy as much as togetherness.
-        </p>
-        <a href="#contact" class="btn-secondary">Join the Waitlist &rarr;</a>
-      </div>
-    </article>
+      <p class="sec-kicker">Every RediHome comes with designer finish palettes and exterior color packs — choose your floors, cabinets, countertops and tile, and see the whole home before a single wall goes up.</p>
+    </div>
 
-    <!-- THE RICKWOOD -->
-    <article class="plan plan-reverse" id="rickwood">
-      <div class="plan-image plan-image-placeholder">
-        <div class="placeholder-content">
-          <span class="placeholder-label">Renderings Coming Soon</span>
-          <span class="placeholder-sub">Plan 04 · The Flagship</span>
+    <div class="mk-stage reveal">
+      <figure class="mk-figure">
+        <img id="mkImg" src="assets/tuggle/kitchen-oak.jpg" alt="The Tuggle kitchen — Warm Oak palette">
+        <figcaption><span id="mkName">Warm Oak</span> &nbsp;·&nbsp; The Tuggle kitchen</figcaption>
+      </figure>
+      <div class="mk-side">
+        <div class="mk-pals" id="mkPals">
+          <button class="mk-pal active" data-img="assets/tuggle/kitchen-oak.jpg"   data-name="Warm Oak"      style="--a:#caa97e;--b:#ffffff;--c:#8f9b82"><span></span><b>Warm Oak</b></button>
+          <button class="mk-pal"        data-img="assets/tuggle/kitchen-green.jpg" data-name="Forest Green"  style="--a:#3d4a39;--b:#6f5a3f;--c:#e7e2d8"><span></span><b>Forest Green</b></button>
+          <button class="mk-pal"        data-img="assets/tuggle/kitchen-linen.jpg" data-name="Soft Linen"    style="--a:#e4d8c5;--b:#ffffff;--c:#cbb89a"><span></span><b>Soft Linen</b></button>
+          <button class="mk-pal"        data-img="assets/tuggle/kitchen-bold.jpg"  data-name="Bold Contrast" style="--a:#e4d8c5;--b:#161616;--c:#ffffff"><span></span><b>Bold Contrast</b></button>
         </div>
-        <span class="status">Coming Soon</span>
+        <a class="btn btn--brick" href="plans.html#tuggle">Design your Tuggle <span class="arr">→</span></a>
+        <p class="mk-note">Four interior palettes · four exterior color packs · the same choice is coming to every plan in the collection.</p>
       </div>
-      <div class="plan-content">
-        <span class="plan-number">Plan 04</span>
-        <h2 class="plan-name">The Rickwood</h2>
-        <p class="plan-specs">±1,800 sq ft · 3 Bed · 2.5 Bath · Two-Story</p>
-        <p class="plan-description">
-          Our flagship. Named for Rickwood Field — the nation's oldest professional baseball park, right here in Birmingham. Two stories, soaring vaulted ceilings, primary suite down, secondary beds up.
-        </p>
-        <a href="#contact" class="btn-secondary">Join the Waitlist &rarr;</a>
-      </div>
-    </article>
-
-  </section>
-
-  <!-- STORY -->
-  <section class="story">
-    <div class="story-inner">
-      <span class="story-eyebrow">Why RediHome</span>
-      <h2 class="story-title">Built where Birmingham was built.</h2>
-      <p>
-        RediHome is a Birmingham-based homebuilder focused on bringing brand-new, energy-efficient homes back to the neighborhoods that built this city.
-      </p>
-      <p>
-        Every home in the 57th Street Collection is named for a Birmingham legend — the people who showed up, did the work, and built something that outlasted them. We're trying to do the same, one home at a time.
-      </p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- CONTACT / SIGNUP -->
-  <section class="contact" id="contact">
-    <div class="contact-inner">
-      <h2 class="contact-title">Tell us where you want to live.</h2>
-      <p class="contact-sub">We'll let you know when we're building there.</p>
+<!-- ============================ WHY ============================ -->
+<section id="why" class="band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <div class="sec-num">03 — Why RediHome</div>
+        <h2 class="sec-title">Honest homes,<br>built to last.</h2>
+      </div>
+      <p class="sec-kicker">We turn rental streets into ownership neighborhoods — one well-built, all-electric home at a time.</p>
+    </div>
+    <div class="vals reveal">
+      <div class="val"><div class="n">/ 01</div><h4>Attainable on purpose</h4><p>Priced from $300k so a working family can actually qualify — not a number invented to chase the top of the market.</p></div>
+      <div class="val"><div class="n">/ 02</div><h4>All-electric</h4><p>No gas lines, lower bills, healthier air. Efficient envelopes and modern systems engineered for the Alabama climate.</p></div>
+      <div class="val"><div class="n">/ 03</div><h4>American-made</h4><p>A standardized domestic supply chain — trusted materials, no overseas-kit guesswork, sourced to ship and build on schedule.</p></div>
+      <div class="val"><div class="n">/ 04</div><h4>Built for the block</h4><p>Infill homes that fit the streets of Woodlawn, Avondale and Norwood — and the people already living on them.</p></div>
+    </div>
+  </div>
+</section>
 
-      <form class="contact-form" action="https://formspree.io/f/xpqbnrkw" method="POST">
-        <input type="text" name="name" placeholder="Your name" required />
-        <input type="email" name="email" placeholder="Email address" required />
-        <input type="text" name="neighborhood" placeholder="Neighborhood you're interested in (optional)" />
-        <button type="submit" class="btn-primary">Keep Me Posted &rarr;</button>
+<!-- ============================ RESERVE ============================ -->
+<section id="reserve">
+  <div class="wrap reserve-grid">
+    <div class="reserve-copy reveal">
+      <h2>Reserve <em>your</em> home.</h2>
+      <p>Put a refundable deposit down to hold a plan and lock your spot in line. We'll be in touch within one business day to walk you through next steps.</p>
+      <div class="steps">
+        <div class="step"><div class="k">1</div><div><b>Reserve your spot</b><p>A fully-refundable reservation deposit, held in escrow — it simply holds your place.</p></div></div>
+        <div class="step"><div class="k">2</div><div><b>Pick your plan & lot</b><p>We'll confirm availability, finishes and timing together.</p></div></div>
+        <div class="step"><div class="k">3</div><div><b>Apply to closing</b><p>Your deposit applies to your purchase — or is returned in full if it's not the right fit.</p></div></div>
+      </div>
+    </div>
+
+    <div class="deposit-card reveal">
+      <div class="row1">
+        <div class="amt">$1,000<small> &nbsp;refundable</small></div>
+        <div class="tag">Reservation deposit</div>
+      </div>
+
+      <!-- LEAD FORM (Formspree) — posts name/contact so you can follow up -->
+      <form id="leadForm" novalidate>
+        <div class="field two">
+          <div><label for="fname">First name</label><input id="fname" name="first_name" type="text" autocomplete="given-name" required></div>
+          <div><label for="lname">Last name</label><input id="lname" name="last_name" type="text" autocomplete="family-name" required></div>
+        </div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel"></div>
+        <div class="field"><label for="plan">Plan of interest</label>
+          <select id="plan" name="plan_interest">
+            <option value="">No preference yet</option>
+            <option>The Tuggle — Plan 01</option>
+            <option>The Powell — Plan 02</option>
+            <option>The Pettiford — Plan 03</option>
+            <option>The Rickwood — Plan 04</option>
+          </select>
+        </div>
+        <div class="field"><label for="msg">Anything we should know? (optional)</label><textarea id="msg" name="message" rows="2"></textarea></div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn--ghost" id="leadBtn">Request a callback <span class="arr">→</span></button>
+          <a href="#" class="btn btn--brick" id="payBtn" rel="noopener">Reserve now — $1,000 refundable <span class="arr">→</span></a>
+        </div>
+        <div class="formmsg" id="formMsg"></div>
+        <p class="note">The reservation deposit is fully refundable and held in escrow. It is not a purchase, contract, or obligation to buy. Pathway Invest, LLC (dba RediHome).</p>
       </form>
-
-      <div class="contact-direct">
-        <p>Or reach out directly:</p>
-        <a href="mailto:sales@redihome.io">sales@redihome.io</a>
-      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">RediHome</span>
-        <span class="footer-tagline">Birmingham, Alabama</span>
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="mark">RediHome<span style="color:var(--brick)">.</span></div>
+        <p>Attainable, all-electric, American-made homes — building ownership neighborhoods across Birmingham.</p>
       </div>
-      <div class="footer-links">
+      <div class="foot-col">
+        <h5>Explore</h5>
         <a href="#collection">The Collection</a>
-        <a href="#contact">Contact</a>
-        <a href="https://instagram.com/redihome.io" target="_blank" rel="noopener">Instagram</a>
+        <a href="#why">Why RediHome</a>
+        <a href="plans.html">Floor Plans</a>
+        <a href="#reserve">Reserve a Home</a>
       </div>
-      <div class="footer-legal">
-        <span>&copy; 2026 RediHome Corporation. All rights reserved.</span>
+      <div class="foot-col">
+        <h5>Get in touch</h5>
+        <a href="mailto:sales@redihome.io">sales@redihome.io</a>
+        <span>Woodlawn · Avondale · Norwood</span>
+        <span>Birmingham, Alabama</span>
       </div>
     </div>
-  </footer>
+    <div class="foot-bot">
+      <span>© <span id="yr"></span> Pathway Invest, LLC (dba RediHome). All rights reserved.</span>
+      <span>Built in Birmingham.</span>
+    </div>
+  </div>
+</footer>
 
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+   CONFIG  —  >>> EDIT THESE TWO LINES BEFORE GOING LIVE <<<
+   ════════════════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  // 1) Your Stripe Payment Link for the $1,000 refundable reservation deposit.
+  //    Create at  https://dashboard.stripe.com/payment-links  → paste the URL here.
+  STRIPE_LINK: "https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK",
+
+  // 2) Your Formspree endpoint for the lead form.
+  //    Create a form at https://formspree.io  → paste its endpoint here.
+  FORMSPREE_URL: "https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID"
+};
+
+/* ════════════════════════════════════════════════════════════════════════
+   PLAN DATA  —  single source of truth for the collection cards.
+   To add a plan later, copy a block. Drop renderings via the `img` field
+   (leave img:"" to keep the line-art placeholder).
+   ⚠ Specs/prices for Plans 02–05 are ESTIMATES — confirm before going live.
+   ════════════════════════════════════════════════════════════════════════ */
+const PLANS = [
+  { id:"tuggle",    badge:"Plan 01", name:"The Tuggle",     named:"for Carrie A. Tuggle",        sf:"1,541", br:"3", ba:"2", price:"From $324,999", img:"assets/tuggle/exterior.jpg", confirmed:true,  href3d:"https://plans.livesiteapp.com/?planId=1a1d986a-36d1-4f9c-bf08-150b03cbdc45" },
+  { id:"powell",    badge:"Plan 02", name:"The Powell",     named:"for Col. James R. Powell",    sf:"~1,600", br:"3", ba:"2", price:"From $324,999",     img:"", confirmed:false, href3d:"plans.html#powell" },
+  { id:"pettiford", badge:"Plan 03", name:"The Pettiford",  named:"for Rev. W. R. Pettiford",    sf:"~1,450", br:"2", ba:"2", price:"From $299,999",     img:"", confirmed:false, href3d:"plans.html#pettiford" },
+  { id:"rickwood",  badge:"Plan 04", name:"The Rickwood",   named:"for Rickwood Field",          sf:"~1,750", br:"4", ba:"2.5", price:"From $349,999", img:"", confirmed:false, href3d:"plans.html#rickwood" }
+];
+
+/* fine-line house placeholder (used when a plan has no rendering yet) */
+const HOUSE_PH = `<svg class="ph" viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg"><g stroke="#1B1A17" stroke-width="2" stroke-linejoin="round" fill="none" opacity="0.55"><path d="M40 86 L120 36 L200 86" fill="#A8432A" fill-opacity="0.12"/><path d="M40 86 L120 36 L200 86"/><rect x="58" y="86" width="124" height="50"/><rect x="74" y="98" width="24" height="24"/><rect x="142" y="98" width="24" height="24"/><rect x="110" y="106" width="22" height="30" fill="#23302A" fill-opacity="0.6"/></g></svg>`;
+
+function renderPlans(){
+  const grid = document.getElementById("planGrid");
+  grid.innerHTML = PLANS.map(p => `
+    <article class="card">
+      <div class="img">
+        <span class="badge">${p.badge}</span>
+        ${p.img ? `<img src="${p.img}" alt="${p.name} rendering">` : HOUSE_PH}
+        ${p.img ? "" : `<span class="soon">Rendering soon</span>`}
+      </div>
+      <div class="body">
+        <h3>${p.name}</h3>
+        <div class="named">${p.named}</div>
+        <div class="specs">
+          <div><b>${p.sf}</b><span>Sq Ft</span></div>
+          <div><b>${p.br}</b><span>Beds</span></div>
+          <div><b>${p.ba}</b><span>Baths</span></div>
+        </div>
+        <div class="price"><b>${p.price}</b></div>
+        <div class="links">
+          <a class="line" href="${p.href3d}">View in 3D</a>
+          <a class="solid" href="#reserve">Reserve</a>
+        </div>
+      </div>
+    </article>`).join("")
+    /* + a "future flagship" teaser for The Vulcan */
+    + `<article class="card teaser">
+         <h3>The Vulcan</h3>
+         <div class="named">future flagship</div>
+         <p>Our forthcoming flagship plan — the largest home in the collection, named for the icon that watches over Birmingham.</p>
+         <div class="flag">Coming soon →</div>
+       </article>`;
+}
+renderPlans();
+
+/* wire up Stripe button */
+document.getElementById("payBtn").href = CONFIG.STRIPE_LINK;
+
+/* lead form -> Formspree */
+const form = document.getElementById("leadForm");
+const msg  = document.getElementById("formMsg");
+const btn  = document.getElementById("leadBtn");
+form.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  msg.className="formmsg"; 
+  if(!form.checkValidity()){ form.reportValidity(); return; }
+  if(CONFIG.FORMSPREE_URL.includes("REPLACE_WITH")){
+    msg.className="formmsg err"; msg.textContent="Form not connected yet — add your Formspree endpoint in the CONFIG block."; return;
+  }
+  btn.disabled=true; const orig=btn.innerHTML; btn.innerHTML="Sending…";
+  try{
+    const res = await fetch(CONFIG.FORMSPREE_URL,{
+      method:"POST", headers:{"Accept":"application/json"}, body:new FormData(form)
+    });
+    if(res.ok){
+      form.reset();
+      msg.className="formmsg ok"; msg.textContent="Got it — we'll reach out within one business day. Thank you.";
+    } else { throw new Error("bad response"); }
+  }catch(err){
+    msg.className="formmsg err"; msg.textContent="Something went wrong. Please email sales@redihome.io and we'll take it from there.";
+  }finally{ btn.disabled=false; btn.innerHTML=orig; }
+});
+
+/* footer year */
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+/* make-it-yours palette switcher */
+const mkPals = document.getElementById("mkPals");
+if(mkPals){
+  mkPals.addEventListener("click", e=>{
+    const b = e.target.closest(".mk-pal"); if(!b) return;
+    mkPals.querySelectorAll(".mk-pal").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    const img = document.getElementById("mkImg");
+    img.style.opacity = 0;
+    const next = new Image();
+    next.onload = ()=>{ img.src = b.dataset.img; img.alt = "The Tuggle kitchen — "+b.dataset.name+" palette"; img.style.opacity = 1; };
+    next.src = b.dataset.img;
+    document.getElementById("mkName").textContent = b.dataset.name;
+  });
+}
+
+/* scroll reveal */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }});
+},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
 </body>
 </html>
