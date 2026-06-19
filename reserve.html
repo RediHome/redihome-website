@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Reserve your home · RediHome — The 57th Street Collection</title>
+  <meta name="description" content="Reserve your RediHome with a $1,000 fully-refundable deposit, held in escrow.">
+  <style>
+  :root{
+    --bone:#F1ECE0; --bone-2:#E8E1D2; --paper:#FBF8F1;
+    --brick:#AF4329; --brick-deep:#8F3520;
+    --ink:#211D18; --ink-2:#4A443B; --line:#D8D0BF; --green:#3C4A38;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Archivo',sans-serif;background:var(--bone);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brick)}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;line-height:1.04;letter-spacing:-.01em}
+  .serif-i{font-style:italic;color:var(--brick)}
+
+  .anno{background:var(--brick);color:#fff;text-align:center;font-size:.74rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px}
+  header{position:sticky;top:0;z-index:50;background:rgba(241,236,224,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-family:'Fraunces',serif;font-weight:600;font-size:1.4rem;letter-spacing:-.02em}
+  .brand b{color:var(--brick)}
+  .nav-links{display:flex;align-items:center;gap:28px}
+  .nav-links a.txt{font-weight:500;font-size:.92rem;color:var(--ink-2)}
+  .nav-links a.txt:hover{color:var(--ink)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-family:'Archivo',sans-serif;font-weight:600;font-size:.95rem;padding:13px 22px;border-radius:2px;cursor:pointer;border:1.5px solid transparent;transition:transform .12s ease,background .15s ease}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-brick{background:var(--brick);color:#fff}
+  .btn-brick:hover{background:var(--brick-deep)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:var(--bone)}
+  .btn-sm{padding:9px 16px;font-size:.85rem}
+
+  .hero{padding:54px 0 24px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center}
+  .hero h1{font-size:clamp(2.5rem,5.4vw,4.4rem);margin:16px 0 0}
+  .hero .lede{font-size:1.12rem;color:var(--ink-2);margin:22px 0 28px;max-width:34em}
+  .hero .lede b{color:var(--ink);font-weight:700}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-meta{margin-top:22px;font-size:.84rem;color:var(--ink-2);letter-spacing:.02em}
+  .hero-fig{position:relative}
+  .hero-fig img{width:100%;border-radius:4px;box-shadow:0 24px 60px -28px rgba(33,29,24,.55)}
+  .hero-tag{position:absolute;left:16px;bottom:16px;background:rgba(33,29,24,.86);color:#fff;font-size:.74rem;font-weight:600;letter-spacing:.06em;padding:8px 13px;border-radius:2px}
+
+  .offer{background:var(--ink);color:var(--bone);margin-top:40px;padding:56px 0}
+  .offer .eyebrow{color:#E6A98F}
+  .offer h2{color:var(--paper);font-size:clamp(1.8rem,3.6vw,2.7rem);margin:14px 0 6px;max-width:18em}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:38px}
+  .pillar .big{font-family:'Fraunces',serif;font-weight:600;font-size:2.6rem;color:#fff;line-height:1}
+  .pillar h3{color:#fff;font-size:1.12rem;margin:10px 0 6px}
+  .pillar p{font-size:.92rem;color:#C9C1B2}
+  .offer-note{margin-top:34px;padding-top:22px;border-top:1px solid rgba(255,255,255,.16);font-size:1rem;color:#D7CFC0;max-width:46em}
+  .offer-note b{color:#fff}
+
+  .sec{padding:64px 0}
+  .sec-head{max-width:40em}
+  .sec-head h2{font-size:clamp(1.9rem,3.8vw,2.8rem);margin:12px 0 0}
+  .sec-head p{color:var(--ink-2);margin-top:14px;font-size:1.05rem}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:30px;margin-top:40px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:5px;overflow:hidden;display:flex;flex-direction:column}
+  .card-figwrap{position:relative;aspect-ratio:1500/971;background:var(--bone-2);overflow:hidden}
+  .card-figwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s ease}
+  .card-figwrap img.on{opacity:1}
+  .badge{position:absolute;top:14px;left:14px;background:var(--brick);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:2px;z-index:2}
+  .badge.soon{background:var(--green)}
+  .card-body{padding:24px 24px 26px;display:flex;flex-direction:column;flex:1}
+  .card-body h3{font-size:1.7rem}
+  .card-sub{font-size:.82rem;color:var(--ink-2);letter-spacing:.04em;text-transform:uppercase;font-weight:600;margin-top:6px}
+  .price-row{display:flex;align-items:baseline;gap:14px;margin:16px 0 4px;flex-wrap:wrap}
+  .price{font-family:'Fraunces',serif;font-weight:600;font-size:1.6rem}
+  .permo{font-size:1rem;color:var(--brick);font-weight:700}
+  .permo span{color:var(--ink-2);font-weight:500;font-size:.82rem}
+  .card p.desc{font-size:.95rem;color:var(--ink-2);margin:10px 0 18px}
+  .swatches{display:flex;gap:10px;margin:4px 0 18px;align-items:center}
+  .swatch{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+  .swatch[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+  .swatch-label{font-size:.8rem;color:var(--ink-2);font-weight:600}
+  .card-cta{margin-top:auto}
+
+  .steps{background:var(--bone-2);padding:64px 0}
+  .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:40px}
+  .step .num{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:2.4rem;color:var(--brick)}
+  .step h3{font-size:1.3rem;margin:6px 0 8px}
+  .step p{font-size:.96rem;color:var(--ink-2)}
+
+  /* reserve */
+  .rsec{padding:72px 0}
+  .res-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .res-copy h2{font-size:clamp(1.9rem,3.8vw,2.8rem);margin:12px 0 0}
+  .res-copy p{color:var(--ink-2);font-size:1.06rem;margin:16px 0 8px;max-width:30em}
+  .res-copy p b{color:var(--ink)}
+  .res-list{list-style:none;margin:18px 0 0}
+  .res-list li{padding:11px 0 11px 30px;position:relative;border-top:1px solid var(--line);font-size:.96rem}
+  .res-list li:first-child{border-top:none}
+  .res-list li::before{content:"";position:absolute;left:2px;top:16px;width:13px;height:8px;border-left:2px solid var(--brick);border-bottom:2px solid var(--brick);transform:rotate(-45deg)}
+  .rcard{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:30px;box-shadow:0 24px 60px -34px rgba(33,29,24,.5)}
+  .res-amt{font-family:'Fraunces',serif;font-weight:600;font-size:2.8rem;line-height:1;margin:6px 0 16px}
+  .res-amt small{font-size:.95rem;color:var(--ink-2);font-weight:500;font-family:'Archivo',sans-serif}
+  .rcard-pay{width:100%;font-size:1.05rem;padding:15px}
+  .orline{display:flex;align-items:center;gap:12px;margin:20px 0 6px;color:var(--ink-2);font-size:.74rem;text-transform:uppercase;letter-spacing:.12em}
+  .orline::before,.orline::after{content:"";flex:1;height:1px;background:var(--line)}
+  .rform input,.rform select,.rform textarea{width:100%;font-family:'Archivo',sans-serif;font-size:.95rem;padding:11px 13px;margin-top:9px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--ink)}
+  .rform input:focus,.rform select:focus,.rform textarea:focus{outline:none;border-color:var(--brick);box-shadow:0 0 0 2px rgba(175,67,41,.15)}
+  .frow{display:flex;gap:9px}
+  .rform-btn{width:100%;margin-top:12px}
+  .res-secure{text-align:center;font-size:.76rem;color:var(--ink-2);margin-top:14px}
+
+  footer{background:var(--ink);color:#C9C1B2;padding:54px 0 40px;font-size:.9rem}
+  .foot-top{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.14)}
+  .foot-top .brand{color:#fff}
+  .foot-links{display:flex;gap:26px;flex-wrap:wrap}
+  .foot-links a:hover{color:#fff}
+  .disc{margin-top:24px;font-size:.76rem;line-height:1.7;color:#9A9384;max-width:62em}
+  .ehl{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:.76rem;color:#B8B0A1}
+
+  .res-hero{padding:54px 0}
+  .res-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
+  .res-hero h1{font-size:clamp(2.3rem,4.8vw,3.7rem);margin:14px 0 0}
+  .res-hero .lede{font-size:1.12rem;color:var(--ink-2);margin:20px 0 6px;max-width:32em}
+  #greet{font-weight:700;color:var(--ink)}
+
+  @media(max-width:860px){
+    .hero-grid,.res-layout,.res-grid{grid-template-columns:1fr;gap:32px}
+    .pillars,.steps-grid{grid-template-columns:1fr;gap:24px}
+    .grid{grid-template-columns:1fr}
+    .nav-links a.txt{display:none}
+    .hero-fig{order:-1}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body id="top">
+  <div class="anno">Now under construction in Woodlawn &nbsp;·&nbsp; Move in for $0 down &amp; $0 closing costs</div>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="index.html">RediHome<b>.</b></a>
+      <nav class="nav-links">
+        <a class="txt" href="index.html#collection">The Homes</a>
+        <a class="txt" href="index.html#offer">The Offer</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="res-hero wrap">
+    <div class="res-grid">
+      <div>
+        <span class="eyebrow">Reserve your RediHome</span>
+        <h1>You designed it. <span class="serif-i">Now make it yours.</span></h1>
+        <p class="lede"><span id="greet">A $1,000 deposit holds your home and lot</span> while we finalize your build and your Right@Home financing. It's fully refundable, held in escrow, and applied to your closing.</p>
+        <ul class="res-list" style="max-width:30em">
+          <li><b>1 · Reserve</b> — $1,000 refundable deposit holds your spot</li>
+          <li><b>2 · Design &amp; confirm</b> — we lock your plan, lot, finishes and timing together</li>
+          <li><b>3 · Sign</b> — you e-sign a simple reservation agreement; the purchase contract comes later through title</li>
+          <li><b>4 · Close</b> — $0 down, $0 cash to close, and your deposit applies to closing</li>
+        </ul>
+        <p style="font-size:.95rem;color:var(--ink-2);margin-top:14px;max-width:30em">Not ready to put money down yet? Use the callback form — leave your info and we'll reach out within one business day.</p>
+      </div>
+
+      <div class="rcard">
+        <span class="eyebrow">Reservation deposit</span>
+        <div class="res-amt">$1,000 <small>fully refundable</small></div>
+        <a class="btn btn-brick rcard-pay" href="https://buy.stripe.com/fZu5kD4Rn42M3vobacaEE00">Reserve now — $1,000 →</a>
+        <div class="orline">or request a callback</div>
+        <form class="rform" action="https://formspree.io/f/xpqbnrkw" method="POST">
+          <input type="hidden" name="_subject" value="New RediHome reservation callback">
+          <input type="hidden" id="hplanR" name="Plan (from designer)" value="">
+          <div class="frow">
+            <input name="First name" placeholder="First name" required>
+            <input name="Last name" placeholder="Last name" required>
+          </div>
+          <input name="email" type="email" placeholder="Email" required>
+          <input name="Phone" type="tel" placeholder="Phone">
+          <select name="Plan of interest" aria-label="Plan of interest">
+            <option>No preference yet</option>
+            <option>The Tuggle — Plan 01 ($324,999)</option>
+            <option>The Powell — Plan 02 ($325,000)</option>
+            <option>The Pettiford — Plan 03 ($300,000)</option>
+            <option>The Rickwood — Plan 04 ($350,000)</option>
+          </select>
+          <textarea name="Notes" rows="2" placeholder="Anything we should know? (optional)"></textarea>
+          <button class="btn btn-ghost rform-btn" type="submit">Request a callback →</button>
+        </form>
+        <p class="res-secure">🔒 Secure checkout via Stripe · We reply within one business day</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-top">
+        <a class="brand" href="index.html">RediHome<b>.</b></a>
+        <div class="foot-links">
+          <a href="index.html#collection">The Homes</a>
+          <a href="index.html#offer">The Offer</a>
+          <a href="mailto:sales@redihome.io">sales@redihome.io</a>
+        </div>
+      </div>
+      <div class="ehl">⌂ Equal Housing Opportunity · Equal Housing Lender</div>
+      <p class="disc">Monthly payment figures are estimates for illustration only and assume 100% financing at a 6.50% interest rate (APR will vary) through Cadence Bank's Right@Home Emerging Communities program, no mortgage insurance, plus estimated Jefferson County owner-occupied property taxes and homeowners insurance. These are not a commitment to lend and are subject to credit approval, program eligibility, and property qualification. Cadence Bank is the lender; RediHome does not make loans. Images are artist's renderings and may differ from finished homes. Reservation deposit of $1,000 is fully refundable and held in escrow; a reservation is not a purchase contract or an obligation to buy. The 57th Street Collection is built by RediHome (Pathway Invest, LLC dba RediHome), Alabama Home Builder License #40331.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var p = new URLSearchParams(location.search);
+      var plan = p.get('plan'); var pal = p.get('palette');
+      var greet = document.getElementById('greet');
+      if(plan){
+        var t = 'Your ' + plan + (pal ? ' in ' + pal : '') + ' is ready to reserve.';
+        greet.textContent = t;
+        var sel = document.querySelector('select[name="Plan of interest"]');
+        if(sel){ for(var i=0;i<sel.options.length;i++){ if(sel.options[i].text.toLowerCase().indexOf(plan.toLowerCase())>-1){ sel.selectedIndex=i; } } }
+        var hp = document.getElementById('hplanR'); if(hp){ hp.value = plan + (pal ? ' / ' + pal : ''); }
+      }
+    })();
+  </script>
+</body>
+</html>
